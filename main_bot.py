@@ -41,7 +41,7 @@ def poluchit_promokod(message):
 
 def register_user(message):
     user_id = message.from_user.id
-    bot.send_message(user_id, "Отправьте фото вашего заказа", reply_markup=ReplyKeyboardRemove())
+    bot.send_message(user_id, "Отправьте скриншот/фото вашего заказа", reply_markup=ReplyKeyboardRemove())
     bot.register_next_step_handler(message, send_image1)
 
 
@@ -49,7 +49,7 @@ def send_image1(message):
     user_id = message.from_user.id
     if message.photo:
         photo1 = message.photo[-1].file_id
-        bot.send_message(user_id, "Отправьте фото отзыва с оценка 5 звёзд на товар")
+        bot.send_message(user_id, "Отправьте скриншот/фото отзыва с оценкой 5 звезд")
         bot.register_next_step_handler(message, send_image2, photo1)
     else:
         bot.send_message(user_id, "Отправьте фотографию, а не файл или текст")
@@ -78,7 +78,7 @@ def send_image2(message, photo1):
 
 def register_user_uz(message):
     user_id = message.from_user.id
-    bot.send_message(user_id, "Buyurtmangizning fotosuratini yuboring", reply_markup=ReplyKeyboardRemove())
+    bot.send_message(user_id, "Buyurtmangizning skrinshotini/fotosini yuboring", reply_markup=ReplyKeyboardRemove())
     bot.register_next_step_handler(message, send_image1_uz)
 
 
@@ -86,7 +86,7 @@ def send_image1_uz(message):
     user_id = message.from_user.id
     if message.photo:
         photo1 = message.photo[-1].file_id
-        bot.send_message(user_id, "Mahsulot uchun 5 yulduzli reyting bilan fotosurat sharhini yuboring")
+        bot.send_message(user_id, "Buyurtmangizni 5 yulduzli skrinshotini/fotosini reyting bilan yuboring")
         bot.register_next_step_handler(message, send_image2_uz, photo1)
     else:
         bot.send_message(user_id, "Fayl yoki matn emas, faqat fotosurat yuboring")
@@ -101,7 +101,7 @@ def send_image2_uz(message, photo1):
     if message.photo:
         photo2 = message.photo[-1].file_id
         photos = [telebot.types.InputMediaPhoto(photo1), telebot.types.InputMediaPhoto(photo2)]
-        bot.send_message(user_id, "Muvaffaqiyatli! Biz uch ish kuni ichida reklama kodini yuboramiz",
+        bot.send_message(user_id, "Muvaffaqiyatli! Biz uch ish kuni ichida promo kodni yuboramiz",
                          reply_markup=ReplyKeyboardRemove())
         bot.send_media_group(-4013840171, media=photos)
         bot.send_message(-4013840171, f"<b>Имя</b>: {name}\n"
