@@ -66,8 +66,8 @@ def send_image2(message, photo1):
         photos = [telebot.types.InputMediaPhoto(photo1), telebot.types.InputMediaPhoto(photo2)]
         bot.send_message(user_id, "Успешно! Мы пришлём промокод  в течении трёх рабочих дней",
                          reply_markup=ReplyKeyboardRemove())
-        bot.send_media_group(-4013840171, media=photos)
-        bot.send_message(-4013840171, f"<b>Имя</b>: {name}\n"
+        bot.send_media_group(-1001608676058, media=photos)
+        bot.send_message(-1001608676058, f"<b>Имя</b>: {name}\n"
                                       f"<b>ID</b>: {user_id}\n"
                                       f"<b>Язык</b>: русский",
                          parse_mode="html", reply_markup=buttons.promo_call(user_id))
@@ -103,8 +103,8 @@ def send_image2_uz(message, photo1):
         photos = [telebot.types.InputMediaPhoto(photo1), telebot.types.InputMediaPhoto(photo2)]
         bot.send_message(user_id, "Muvaffaqiyatli! Biz uch ish kuni ichida promo kodni yuboramiz",
                          reply_markup=ReplyKeyboardRemove())
-        bot.send_media_group(-4013840171, media=photos)
-        bot.send_message(-4013840171, f"<b>Имя</b>: {name}\n"
+        bot.send_media_group(-1001608676058, media=photos)
+        bot.send_message(-1001608676058, f"<b>Имя</b>: {name}\n"
                                       f"<b>ID</b>: {user_id}\n"
                                       f"<b>Язык</b>: узбекский",
                          parse_mode="html", reply_markup=buttons.promo_call(user_id))
@@ -116,20 +116,21 @@ def send_image2_uz(message, photo1):
 def send_promo(message, user_id, admin_id):
     if message.from_user.id == admin_id:
         if message.text == "❌Отмена":
-            bot.send_message(-4013840171, f"{user_id} не получил промокод ❌")
+            bot.send_message(-1001608676058, f"{user_id} не получил промокод ❌")
         else:
             try:
                 bot.send_message(user_id, message.text)
-                bot.send_message(-4013840171, f"{user_id} получил промокод✅")
+                # reply тут
+                bot.send_message(-1001608676058, f"{user_id} получил промокод✅")
             except:
-                bot.send_message(-4013840171, f"{user_id} не получил промокод ❌")
+                bot.send_message(-1001608676058, f"{user_id} не получил промокод ❌")
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def promo(call):
     user_id = int(call.data)
     admin_id = call.from_user.id
-    bot.send_message(-4013840171,
+    bot.send_message(-1001608676058,
                      f"Отправьте сообщение для юзера с айди: {user_id}. Для отмены нажмите на кнопку отмены",
                      reply_markup=buttons.cancel_kb())
     bot.register_next_step_handler(call.message, send_promo, user_id, admin_id)
@@ -160,7 +161,7 @@ def save_user_to_excel(user_id, username):
 
 
 def send_info_to_group(user_id, username, phone_number, photo):
-    bot.send_photo(-4013840171, photo=photo, caption=f"<b>Имя 👤</b>: {username}\n"
+    bot.send_photo(-1001608676058, photo=photo, caption=f"<b>Имя 👤</b>: {username}\n"
                                                      f"<b>ID 🆔</b>: {user_id}\n"
                                                      f"<b>Номер телефона 📞</b>: {phone_number}",
                    parse_mode="html")
@@ -175,7 +176,7 @@ def send_excel_report_to_group():
         if (today - last_modified).days <= 30:
             # Проверяем, отправляли ли отчет сегодня
             if not os.path.exists(last_report_sent_file):
-                bot.send_document(-4013840171, open(excel_file_path, 'rb'))
+                bot.send_document(-1001608676058, open(excel_file_path, 'rb'))
                 save_last_report_sent_date(today)
 
 
