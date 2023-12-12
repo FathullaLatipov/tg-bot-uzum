@@ -9,7 +9,7 @@ from telebot.types import ReplyKeyboardRemove
 
 load_dotenv()
 
-bot = telebot.TeleBot(os.getenv('KEY'))
+bot = telebot.TeleBot('6669872523:AAFxiuTE7v1oJWBCrhhXpjLotJ_dZheMZ70')
 
 # Путь к файлу Excel
 excel_file_path = 'user_data.xlsx'
@@ -169,15 +169,11 @@ def send_info_to_group(user_id, username, phone_number, photo):
 
 def send_excel_report_to_group():
     if os.path.exists(excel_file_path):
-        today = datetime.date.today()
-        last_modified = datetime.date.fromtimestamp(os.path.getmtime(excel_file_path))
+        last_report_date = get_last_report_sent_date()
 
-        # Проверяем, был ли файл изменен в последние 30 дней
-        if (today - last_modified).days <= 30:
-            # Проверяем, отправляли ли отчет сегодня
-            if not os.path.exists(last_report_sent_file):
-                bot.send_document(-1001608676058, open(excel_file_path, 'rb'))
-                save_last_report_sent_date(today)
+        if last_report_date is None or (datetime.date.today() - last_report_date).days >= 3:
+            bot.send_document(-1001608676058, open(excel_file_path, 'rb'))
+            save_last_report_sent_date(datetime.date.today())
 
 
 def get_last_report_sent_date():
