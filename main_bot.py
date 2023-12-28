@@ -3,10 +3,11 @@ import buttons
 import database
 import openpyxl
 import datetime
+import threading
 from dotenv import load_dotenv
 import os
 from telebot.types import ReplyKeyboardRemove
-
+import time
 load_dotenv()
 
 bot = telebot.TeleBot('6669872523:AAFxiuTE7v1oJWBCrhhXpjLotJ_dZheMZ70')
@@ -171,7 +172,7 @@ def send_excel_report_to_group():
     if os.path.exists(excel_file_path):
         last_report_date = get_last_report_sent_date()
 
-        if last_report_date is None or (datetime.date.today() - last_report_date).days >= 3:
+        if last_report_date is None or (datetime.date.today() - last_report_date).days >= 1:
             bot.send_document(-1001608676058, open(excel_file_path, 'rb'))
             save_last_report_sent_date(datetime.date.today())
 
@@ -189,9 +190,14 @@ def save_last_report_sent_date(date):
     with open(last_report_sent_file, 'w') as file:
         file.write(date.strftime('%Y-%m-%d'))
 
+# Запуск рассылки отчета каждые 3 дня
+def all_schedules():
+    while True:
+        send_excel_report_to_group()
+        time.sleep(20)
 
-# Запуск рассылки отчета каждые 30 дней
-send_excel_report_to_group()
 
+treading1 = threading.Thread(target=all_schedules)
+treading1.start()
 # Запуск бота
 bot.infinity_polling()
