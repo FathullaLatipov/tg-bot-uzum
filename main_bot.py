@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 from telebot.types import ReplyKeyboardRemove
 import time
+
 load_dotenv()
 
 bot = telebot.TeleBot('6669872523:AAFxiuTE7v1oJWBCrhhXpjLotJ_dZheMZ70')
@@ -69,8 +70,8 @@ def send_image2(message, photo1):
                          reply_markup=ReplyKeyboardRemove())
         bot.send_media_group(-1001608676058, media=photos)
         bot.send_message(-1001608676058, f"<b>Имя</b>: {name}\n"
-                                      f"<b>ID</b>: {user_id}\n"
-                                      f"<b>Язык</b>: русский",
+                                         f"<b>ID</b>: {user_id}\n"
+                                         f"<b>Язык</b>: русский",
                          parse_mode="html", reply_markup=buttons.promo_call(user_id))
     else:
         bot.send_message(user_id, "Отправьте фотографию, а не файл или текст")
@@ -106,8 +107,8 @@ def send_image2_uz(message, photo1):
                          reply_markup=ReplyKeyboardRemove())
         bot.send_media_group(-1001608676058, media=photos)
         bot.send_message(-1001608676058, f"<b>Имя</b>: {name}\n"
-                                      f"<b>ID</b>: {user_id}\n"
-                                      f"<b>Язык</b>: узбекский",
+                                         f"<b>ID</b>: {user_id}\n"
+                                         f"<b>Язык</b>: узбекский",
                          parse_mode="html", reply_markup=buttons.promo_call(user_id))
     else:
         bot.send_message(user_id, "Fayl yoki matn emas, faqat fotosurat yuboring")
@@ -163,9 +164,13 @@ def save_user_to_excel(user_id, username):
 
 def send_info_to_group(user_id, username, phone_number, photo):
     bot.send_photo(-1001608676058, photo=photo, caption=f"<b>Имя 👤</b>: {username}\n"
-                                                     f"<b>ID 🆔</b>: {user_id}\n"
-                                                     f"<b>Номер телефона 📞</b>: {phone_number}",
+                                                        f"<b>ID 🆔</b>: {user_id}\n"
+                                                        f"<b>Номер телефона 📞</b>: {phone_number}",
                    parse_mode="html")
+    try:
+        send_excel_report_to_group()
+    except:
+        pass
 
 
 def send_excel_report_to_group():
@@ -190,14 +195,6 @@ def save_last_report_sent_date(date):
     with open(last_report_sent_file, 'w') as file:
         file.write(date.strftime('%Y-%m-%d'))
 
-# Запуск рассылки отчета каждые 3 дня
-def all_schedules():
-    while True:
-        send_excel_report_to_group()
-        time.sleep(20)
 
-
-treading1 = threading.Thread(target=all_schedules)
-treading1.start()
 # Запуск бота
 bot.infinity_polling()
